@@ -33,16 +33,16 @@ void GLWindow::draw(){
 	Display *d = (Display*)(g);
 
 	for (int i = 0; i < d->numPolys(); i++){
-				
+
 		if (i == d->getSelected())
 			glColor3f(1, 0, 0);
 		else 
 			glColor3f(0, 0, 1);
-			
-		vec4 v1 = d->getPoly(i).getCol(0);
-		vec4 v2 = d->getPoly(i).getCol(1);
-		vec4 v3 = d->getPoly(i).getCol(2);
-		vec4 v4 = d->getPoly(i).getCol(3);
+
+		vec4 v1 = ((mat4)(d->getPoly(i)))[0];
+		vec4 v2 = ((mat4)(d->getPoly(i)))[1];
+		vec4 v3 = ((mat4)(d->getPoly(i)))[2];
+		vec4 v4 = ((mat4)(d->getPoly(i)))[3];
 			
 		glBegin(GL_QUADS);
 			glVertex3f(v1[0], v1[1], v1[2]);

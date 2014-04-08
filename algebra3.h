@@ -46,7 +46,7 @@ class vec2
 {
 protected:
 
- double n[2];
+	double n[2];
 
 public:
 
@@ -111,7 +111,7 @@ class vec3
 {
 protected:
 
- double n[3];
+	double n[3];
 
 public:
 
@@ -210,6 +210,7 @@ double length();			    // length of a vec4
 double length2();			    // squared length of a vec4
 vec4& normalize();			    // normalize a vec4
 vec4& apply(V_FCT_PTR fct);		    // apply a func. to each component
+void print() const;					// print vector values
 
 // friends
 
@@ -267,7 +268,7 @@ mat3& operator += ( const mat3& m );	    // incrementation by a mat3
 mat3& operator -= ( const mat3& m );	    // decrementation by a mat3
 mat3& operator *= ( const double d );	    // multiplication by a constant
 mat3& operator /= ( const double d );	    // division by a constant
-vec3& operator [] ( int i);		    // indexing
+vec3& operator [] ( int i) ;		    // indexing
 
 // special functions
 
@@ -307,7 +308,7 @@ class mat4
 {
 protected:
 
- vec4 v[4];
+ vec4 v[4];		//array of vectors
 
 public:
 
@@ -333,6 +334,7 @@ mat4 transpose();			    // transpose
 mat4 inverse();				    // inverse
 mat4& apply(V_FCT_PTR fct);		// apply a func. to each element
 vec4& getCol(int i);			// get Column i of matrix
+void print();
 
 // friends
 

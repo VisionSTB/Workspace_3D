@@ -175,7 +175,7 @@ vec3::vec3(const vec3& v)
 { n[VX] = v.n[VX]; n[VY] = v.n[VY]; n[VZ] = v.n[VZ]; }
 
 vec3::vec3(const vec2& v)
-{ n[VX] = v.n[VX]; n[VY] = v.n[VY]; n[VZ] = 1.0; }
+{ n[VX] = v.n[VX]; n[VY] = v.n[VY]; n[VZ] = 0.0; }
 
 vec3::vec3(const vec2& v, double d)
 { n[VX] = v.n[VX]; n[VY] = v.n[VY]; n[VZ] = d; }
@@ -338,7 +338,7 @@ vec4::vec4(const vec4& v)
 { n[VX] = v.n[VX]; n[VY] = v.n[VY]; n[VZ] = v.n[VZ]; n[VW] = v.n[VW]; }
 
 vec4::vec4(const vec3& v)
-{ n[VX] = v.n[VX]; n[VY] = v.n[VY]; n[VZ] = v.n[VZ]; n[VW] = 1.0; }
+{ n[VX] = v.n[VX]; n[VY] = v.n[VY]; n[VZ] = v.n[VZ]; n[VW] = 0.0; }
 
 vec4::vec4(const vec3& v, const double d)
 { n[VX] = v.n[VX]; n[VY] = v.n[VY]; n[VZ] = v.n[VZ];  n[VW] = d; }
@@ -387,6 +387,12 @@ vec4& vec4::apply(V_FCT_PTR fct)
 { n[VX] = (*fct)(n[VX]); n[VY] = (*fct)(n[VY]); n[VZ] = (*fct)(n[VZ]);
 n[VW] = (*fct)(n[VW]); return *this; }
 
+void vec4::print() const
+{
+	std::cout << "[ " << n[VX] <<
+		", " << n[VY] << ", " << n[VZ] << 
+		", " << n[VW] << " ]" << std::endl;
+}
 
 // FRIENDS
 
@@ -718,8 +724,7 @@ return *this; }
 
 vec4& mat4::getCol(int i)
 {
-	mat4 transposedM = this->transpose();
-	return transposedM[i];
+	return vec4(v[0].n[i], v[1].n[i], v[2].n[i], v[3].n[i]);
 }
 
 // FRIENDS

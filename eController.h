@@ -8,6 +8,8 @@ void parser(const char* file, std::vector<Face*> *faces); // A function for load
 
 class Controller{
 	private:
+		double rate = 10.0;
+		double rotation = 10.0;
 		std::vector<Face*> faces;	// Store all of the faces/polygons in the scene
 		int selected;				// Which face is currently selected
 		Display* d;					// A pointer to the display mechanisms
@@ -17,7 +19,9 @@ class Controller{
 
 		const int numPolys();				// Get the number of faces
 		const mat4 getPoly(int i);			// Get a certain face
+		void setPoly(mat4 m);				// set a face with new/edited vertices
 		const int getSelected();			// Get which face has been selected
 		void select(int i);					// Set the selected face
-		void extrudeSelected(float depth);	// Perform an extrusion
+//		void extrudeSelected(float depth);	// Perform an extrusion
+		Fl_Timeout_Handler rotatingCB(void* data);	//Callback to rotate cube
 };

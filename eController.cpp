@@ -10,6 +10,7 @@ Controller::Controller(){
 	d->select(selected);						// Let the browser know what was selected
 	d->updateBrowser();							// Update the browser and OpenGL window
 	d->updateDrawing();
+	Fl::add_timeout(rate, rotatingCB(this));
 }
 
 Controller::~Controller(){};
@@ -27,21 +28,36 @@ void Controller::select(int i){								// Set the selected face
 	selected = i; d->updateDrawing();
 }
 
-void Controller::extrudeSelected(float depth){				// Do an extrusion
-	int sel = getSelected();
-	mat4 points = faces[sel]->getPoints();
-	Face *f = faces[sel];
-	faces.erase(faces.begin() + sel);
-	vec4 v1New = depth * f->getNormal() + points.getCol(0);
-	vec4 v2New = depth * f->getNormal() + points.getCol(1);
-	vec4 v3New = depth * f->getNormal() + points.getCol(2);
-	vec4 v4New = depth * f->getNormal() + points.getCol(3);
-	faces.push_back(new Face(points.getCol(0), points.getCol(1), v2New, v1New));
-	faces.push_back(new Face(points.getCol(1), points.getCol(2), v3New, v2New ));
-	faces.push_back(new Face(points.getCol(2), points.getCol(3), v4New, v3New ));
-	faces.push_back(new Face(points.getCol(3), points.getCol(0), v1New, v4New));
-	faces.push_back(new Face(v1New, v2New, v3New, v4New));
-	d->updateBrowser();
+//void Controller::extrudeSelected(float depth){				// Do an extrusion
+//	int sel = getSelected();
+//	mat4 points = faces[sel]->getPoints();
+//	Face *f = faces[sel];
+//	faces.erase(faces.begin() + sel);
+//	vec4 v1New = depth * f->getNormal() + points.getCol(0);
+//	vec4 v2New = depth * f->getNormal() + points.getCol(1);
+//	vec4 v3New = depth * f->getNormal() + points.getCol(2);
+//	vec4 v4New = depth * f->getNormal() + points.getCol(3);
+//	faces.push_back(new Face(points.getCol(0), points.getCol(1), v2New, v1New));
+//	faces.push_back(new Face(points.getCol(1), points.getCol(2), v3New, v2New ));
+//	faces.push_back(new Face(points.getCol(2), points.getCol(3), v4New, v3New ));
+//	faces.push_back(new Face(points.getCol(3), points.getCol(0), v1New, v4New));
+//	faces.push_back(new Face(v1New, v2New, v3New, v4New));
+//	d->updateBrowser();
+//	d->updateDrawing();
+//	delete f;
+//}
+
+Fl_Timeout_Handler Controller::rotatingCB(void* data)
+{
+	Controller* control = (Controller*)data;
+	std::cout << "timing" << std::endl;
+	for (int i = 0; i < control->numPolys(); i++)
+	{
+		std::cout << "rotating" << std:: endl;
+		double r = control->rotation;
+		mat4 rotated = (mat4)control->faces[i]->getPoints() * rotation3D(vec3(1, 0, 0), r);
+		control->faces[i]->setPoints(rotated);
+	}
 	d->updateDrawing();
-	delete f;
+	Fl::repeat_timeout(rate, rotatingCB(control));
 }

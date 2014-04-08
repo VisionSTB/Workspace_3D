@@ -14,6 +14,7 @@ vec4 parsePoint(std::string point){		// get the x, y, z values of a vertex
 	pointStream >> output[0];
 	pointStream >> output[1];
 	pointStream >> output[2];
+	output[3] = 0;
 	//std::cout<<"OUTPUT:  "<<output[0]<<" "<<output[1]<<" "<<output[2]<<"\n";
 	return output;
 }
