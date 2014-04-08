@@ -23,5 +23,5 @@ class Controller{
 		const int getSelected();			// Get which face has been selected
 		void select(int i);					// Set the selected face
 //		void extrudeSelected(float depth);	// Perform an extrusion
-		Fl_Timeout_Handler rotatingCB(void* data);	//Callback to rotate cube
+		static void rotatingCB(void* data);	//Callback to rotate cube
 };

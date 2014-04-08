@@ -47,7 +47,7 @@ void Controller::select(int i){								// Set the selected face
 //	delete f;
 //}
 
-Fl_Timeout_Handler Controller::rotatingCB(void* data)
+void Controller::rotatingCB(void* data)
 {
 	Controller* control = (Controller*)data;
 	std::cout << "timing" << std::endl;
@@ -58,6 +58,6 @@ Fl_Timeout_Handler Controller::rotatingCB(void* data)
 		mat4 rotated = (mat4)control->faces[i]->getPoints() * rotation3D(vec3(1, 0, 0), r);
 		control->faces[i]->setPoints(rotated);
 	}
-	d->updateDrawing();
-	Fl::repeat_timeout(rate, rotatingCB(control));
+	control->d->updateDrawing();
+	Fl::repeat_timeout(control->rate, rotatingCB(control));
 }
