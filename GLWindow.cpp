@@ -1,6 +1,7 @@
 #include "GLWindow.h"
 #include "Display.h"
 #include "algebra3.h"
+#include <FL/names.h>
 
 GLWindow::GLWindow(int x, int y, int w, int h) : Fl_Gl_Window(x, y, w, h){
 	c= new Camera(4, 0, 0);	// create a camera
@@ -61,7 +62,8 @@ void GLWindow::draw(){
 	}
 }
 
-int GLWindow::handle(int event){		// handle keyboard events
+int GLWindow::handle(int event){		// handle keyboard and mouse events
+	double start_x = 0, start_y = 0;
 	if (event == FL_KEYUP){				// when the key is released, check for an event and handle it
 		if (Fl::event_key() == 'a'){
 			c->increasePhi(-7);
@@ -85,6 +87,31 @@ int GLWindow::handle(int event){		// handle keyboard events
 		}
 		if (Fl::event_key() == 'f'){
 			c->increaseRad(.5);					
+			redraw();
+		}
+	}
+	if (event == FL_PUSH){
+		if (Fl::event_button() == FL_RIGHT_MOUSE){
+			std::cout << "Right Mouse Pushed" << std::endl;
+			start_x = Fl::event_x();
+			start_y = Fl::event_y();
+			//while (Fl::event_state() == FL_DRAG){
+			//	std::cout << "Right Mouse dragging" << std::endl;
+			//	double move_x = Fl::event_x() - start_x;
+			//	double move_y = Fl::event_y() - start_y;
+			//	c->increasePhi(move_x);
+			//	c->increaseTheta(move_y);
+			//}
+		}
+	}
+	if (event == FL_DRAG){
+		std::cout << "Right Mouse dragging" << std::endl;
+		//double move_x = Fl::event_x() - start_x;
+		//double move_y = Fl::event_y() - start_y;
+		//c->increasePhi(move_x);
+		//c->increaseTheta(move_y);
+		if (Fl::event_x() > 0){
+			c->increasePhi(Fl::event_x());
 			redraw();
 		}
 	}

@@ -10,10 +10,17 @@ Controller::Controller(){
 	d->select(selected);						// Let the browser know what was selected
 	d->updateBrowser();							// Update the browser and OpenGL window
 	d->updateDrawing();
-	Fl::add_timeout(rate, rotatingCB(this));
+	Fl::add_timeout(rate, callback, this);
+
+	//rotate_cube();
 }
 
 Controller::~Controller(){};
+
+const double Controller::getRate()
+{
+	return rate;
+}
 
 const int Controller::numPolys(){							// Get the number of faces
 	return faces.size();
@@ -47,17 +54,21 @@ void Controller::select(int i){								// Set the selected face
 //	delete f;
 //}
 
-void Controller::rotatingCB(void* data)
+void Controller::rotate_cube()
 {
-	Controller* control = (Controller*)data;
-	std::cout << "timing" << std::endl;
+	Controller* control = this;
 	for (int i = 0; i < control->numPolys(); i++)
 	{
-		std::cout << "rotating" << std:: endl;
 		double r = control->rotation;
-		mat4 rotated = (mat4)control->faces[i]->getPoints() * rotation3D(vec3(1, 0, 0), r);
+		mat4 rotated = (mat4)control->faces[i]->getPoints() * rotation3D(axis, r);
 		control->faces[i]->setPoints(rotated);
 	}
 	control->d->updateDrawing();
-	Fl::repeat_timeout(control->rate, rotatingCB(control));
+}
+
+void Controller::callback(void* data)
+{
+	Controller* control = (Controller*)data;  //expecting Controller type
+	control->rotate_cube();
+	Fl::repeat_timeout(control->getRate(), callback, data);
 }
