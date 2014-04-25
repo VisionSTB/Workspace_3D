@@ -727,6 +727,13 @@ vec4& mat4::getCol(int i)
 	return vec4(v[0].n[i], v[1].n[i], v[2].n[i], v[3].n[i]);
 }
 
+void mat4::print() {
+	v[0].print();
+	v[1].print();
+	v[2].print();
+	v[3].print();
+}
+
 // FRIENDS
 
 mat4 operator - (const mat4& a)

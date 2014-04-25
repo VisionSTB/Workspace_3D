@@ -6,7 +6,7 @@
 class Camera{
 	private:
 		mat4 rot;			// Current rotation matrix 
-		vec4 up;				// Current up vector
+		vec4 up;			// Current up vector
 		vec4 eye;			// Current eye/camera position
 	public:
 		Camera(float r, float phi, float theta); 

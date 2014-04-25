@@ -17,6 +17,7 @@
     <ClCompile Include="eController.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GLWindow.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="parser.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -26,6 +27,7 @@
     <ClInclude Include="eController.h" />
     <ClInclude Include="face.h" />
     <ClInclude Include="GLWindow.h" />
+    <ClInclude Include="Mesh.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{ADEF280C-002C-4B6C-A17F-BAB179BF208C}</ProjectGuid>

@@ -3,34 +3,76 @@
 
 Controller::Controller(){	
 	//create cube
-	parser("sampleInput.txt", &faces);			// Will load a model from a file
+	//parser("sampleInput.txt", &faces);			// Will load a model from a file
+	m = new Mesh();								// default a mesh
 	selected = 0;								// Start with the zero-ith face selected
-	d = new Display(10, 10, 600, 600, this);	// Create a new display window
+	d = new Display(10, 10, 800, 800, this);	// Create a new display window
 	d->show();									// Show the window
-	d->select(selected);						// Let the browser know what was selected
-	d->updateBrowser();							// Update the browser and OpenGL window
+	//d->select(selected);						// Let the browser know what was selected
+	//d->updateBrowser();						// Update the browser and OpenGL window
 	d->updateDrawing();
-	Fl::add_timeout(rate, callback, this);
-
-	//rotate_cube();
+	//Fl::add_timeout(rate, callback, this);   // callback to rotate cube
 }
 
 Controller::~Controller(){};
 
-const double Controller::getRate()
-{
+const int Controller::isWireFrame() {			// is the mesh in wireframe mode?
+	return m->getWireFrame();
+}
+
+const double Controller::getRate() {
 	return rate;
 }
 
-const int Controller::numPolys(){							// Get the number of faces
-	return faces.size();
+const int Controller::numPolys(){				// Get the number of faces
+	//return faces.size();
+	return m->getNumPolys();
 }
-const mat4 Controller::getPoly(int i){					// Get a certain face
-	return faces[i]->getPoints();
+
+const mat4 Controller::getPoly(int i){			// Get a certain face
+	//return faces[i]->getPoints();
+	return m->getQuad(i);
 }
-const int Controller::getSelected(){						// Get which face has been selected
+
+const int Controller::getNumRows() {
+	return m->getNumRows();
+}
+
+const int Controller::getNumCols() {
+	return m->getNumCols();
+}
+
+const double Controller::getWidth() {
+	return m->getRowWidth();
+}
+
+const double Controller::getDepth() {
+	return m->getColDepth();
+}
+
+const double Controller::getRed() {
+	return m->getRed();
+}
+
+const double Controller::getGreen() {
+	return m->getGreen();
+}
+
+const double Controller::getBlue() {
+	return m->getBlue();
+}
+
+const int Controller::getSelected(){			// Get which face has been selected
 	return selected;
 }
+
+void Controller::setMesh(Mesh* mesh) {
+	free(m);
+	m = mesh;
+	std::cout << "new mesh" << std::endl;
+	d->updateDrawing();
+}
+
 void Controller::select(int i){								// Set the selected face
 	selected = i; d->updateDrawing();
 }
@@ -54,21 +96,37 @@ void Controller::select(int i){								// Set the selected face
 //	delete f;
 //}
 
-void Controller::rotate_cube()
-{
-	Controller* control = this;
-	for (int i = 0; i < control->numPolys(); i++)
-	{
-		double r = control->rotation;
-		mat4 rotated = (mat4)control->faces[i]->getPoints() * rotation3D(axis, r);
-		control->faces[i]->setPoints(rotated);
-	}
-	control->d->updateDrawing();
+void Controller::printVertices() {
+	m->printVertices();
 }
 
-void Controller::callback(void* data)
-{
-	Controller* control = (Controller*)data;  //expecting Controller type
-	control->rotate_cube();
-	Fl::repeat_timeout(control->getRate(), callback, data);
+void Controller::toggleWireFrame() {
+	if (isWireFrame() != 0) {
+		// wireframe is on, toggle off
+		m->setWireFrame(0);
+	}
+	else {
+		// wireframe is off, toggle on
+		m->setWireFrame(1);
+	}
+	d->updateDrawing();
 }
+
+//void Controller::rotate_cube()
+//{
+//	Controller* control = this;
+//	for (int i = 0; i < control->numPolys(); i++)
+//	{
+//		double r = control->rotation;
+//		mat4 rotated = (mat4)control->faces[i]->getPoints() * rotation3D(axis, r);
+//		control->faces[i]->setPoints(rotated);
+//	}
+//	control->d->updateDrawing();
+//}
+//
+//void Controller::callback(void* data)
+//{
+//	Controller* control = (Controller*)data;  //expecting Controller type
+//	control->rotate_cube();
+//	Fl::repeat_timeout(control->getRate(), callback, data);
+//}

@@ -1,7 +1,6 @@
 #include "GLWindow.h"
 #include "Display.h"
 #include "algebra3.h"
-#include <FL/names.h>
 
 GLWindow::GLWindow(int x, int y, int w, int h) : Fl_Gl_Window(x, y, w, h){
 	c= new Camera(4, 0, 0);	// create a camera
@@ -35,22 +34,24 @@ void GLWindow::draw(){
 
 	for (int i = 0; i < d->numPolys(); i++){
 
-		if (i == d->getSelected())
-			glColor3f(1, 0, 0);
-		else 
-			glColor3f(0, 0, 1);
+		//if (i == d->getSelected())
+		//	glColor3f(1, 0, 0);
+		//else 
+		glColor3f(d->getRed(), d->getGreen(), d->getBlue());
 
 		vec4 v1 = ((mat4)(d->getPoly(i)))[0];
 		vec4 v2 = ((mat4)(d->getPoly(i)))[1];
 		vec4 v3 = ((mat4)(d->getPoly(i)))[2];
 		vec4 v4 = ((mat4)(d->getPoly(i)))[3];
-			
-		glBegin(GL_QUADS);
-			glVertex3f(v1[0], v1[1], v1[2]);
-			glVertex3f(v2[0], v2[1], v2[2]);
-			glVertex3f(v3[0], v3[1], v3[2]);
-			glVertex3f(v4[0], v4[1], v4[2]);
-		glEnd();
+		
+		if (d->isWireFrame() != 0) {
+			glBegin(GL_QUADS);
+				glVertex3f(v1[0], v1[1], v1[2]);
+				glVertex3f(v2[0], v2[1], v2[2]);
+				glVertex3f(v3[0], v3[1], v3[2]);
+				glVertex3f(v4[0], v4[1], v4[2]);
+			glEnd();
+		}
 
 		glColor3f(1, 1, 1);			// outline the faces so that they are easier to see
 		glBegin(GL_LINE_LOOP);
@@ -90,30 +91,30 @@ int GLWindow::handle(int event){		// handle keyboard and mouse events
 			redraw();
 		}
 	}
-	if (event == FL_PUSH){
-		if (Fl::event_button() == FL_RIGHT_MOUSE){
-			std::cout << "Right Mouse Pushed" << std::endl;
-			start_x = Fl::event_x();
-			start_y = Fl::event_y();
-			//while (Fl::event_state() == FL_DRAG){
-			//	std::cout << "Right Mouse dragging" << std::endl;
-			//	double move_x = Fl::event_x() - start_x;
-			//	double move_y = Fl::event_y() - start_y;
-			//	c->increasePhi(move_x);
-			//	c->increaseTheta(move_y);
-			//}
-		}
-	}
-	if (event == FL_DRAG){
-		std::cout << "Right Mouse dragging" << std::endl;
-		//double move_x = Fl::event_x() - start_x;
-		//double move_y = Fl::event_y() - start_y;
-		//c->increasePhi(move_x);
-		//c->increaseTheta(move_y);
-		if (Fl::event_x() > 0){
-			c->increasePhi(Fl::event_x());
-			redraw();
-		}
-	}
+	//if (event == FL_PUSH){
+	//	if (Fl::event_button() == FL_RIGHT_MOUSE){
+	//		std::cout << "Right Mouse Pushed" << std::endl;
+	//		start_x = Fl::event_x();
+	//		start_y = Fl::event_y();
+	//		//while (Fl::event_state() == FL_DRAG){
+	//		//	std::cout << "Right Mouse dragging" << std::endl;
+	//		//	double move_x = Fl::event_x() - start_x;
+	//		//	double move_y = Fl::event_y() - start_y;
+	//		//	c->increasePhi(move_x);
+	//		//	c->increaseTheta(move_y);
+	//		//}
+	//	}
+	//}
+	//if (event == FL_DRAG){
+	//	std::cout << "Right Mouse dragging" << std::endl;
+	//	//double move_x = Fl::event_x() - start_x;
+	//	//double move_y = Fl::event_y() - start_y;
+	//	//c->increasePhi(move_x);
+	//	//c->increaseTheta(move_y);
+	//	if (Fl::event_x() > 0){
+	//		c->increasePhi(Fl::event_x());
+	//		redraw();
+	//	}
+	//}
 	return Fl_Gl_Window::handle(event);
 }
