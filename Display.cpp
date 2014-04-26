@@ -27,8 +27,21 @@ Display::Display(int x, int y, int w, int h, Controller* c):Fl_Window(x, y, w, h
 		depthCounter->callback((void(*)(Fl_Widget*, void*))depthCounterCB, (void*)c);
 		depthCounter->value(c->getDepth());
 
-		newMeshB = new Fl_Button(0, 170, w / 5, 20, "New Mesh");
+		newMeshB = new Fl_Button(0, 290, w / 5, 20, "New Mesh");
 		newMeshB->callback((void(*)(Fl_Widget*, void*))newMeshCB, (void*)this);
+
+		smoothB = new Fl_Button(0, 320, w / 5, 20, "Smooth Mesh");
+		smoothB->callback((void(*)(Fl_Widget*, void*))smoothCB, (void*)c);
+
+		pickColor = new Fl_Color_Chooser(0, 190, w / 5, 95, "new Mesh Color");
+		pickColor->callback((void(*)(Fl_Widget*, void*))pickColorCB, (void*)this);
+		pickColor->rgb(c->getRed(), c->getGreen(), c->getBlue());
+
+		topViewB = new Fl_Button(0, h - 90, w / 10, 20, "Top View");
+		topViewB->callback((void(*)(Fl_Widget*, void*))setViewCB, (void*)this);
+
+		frontViewB = new Fl_Button(w / 10, h - 90, w / 10, 20, "Front View");
+		frontViewB->callback((void(*)(Fl_Widget*, void*))setViewCB, (void*)this);
 
 		slider = new Fl_Value_Slider(0, h-50, w/5, 20);
 		slider->range(1, 10);
@@ -107,6 +120,33 @@ void Display::newMeshCB(Fl_Button* w, Display* d) {
 	double color[3] = { 1, 0, 0 };
 	Mesh* m = new Mesh(numCols, numRows, rowWidth, colDepth, color);
 	d->c->setMesh(m);
+}
+
+void Display::smoothCB(Fl_Button* w, Controller* c) {
+	/* use catmul-clark sub-division */
+}
+
+void Display::pickColorCB(Fl_Color_Chooser* w, Display* d) {
+	double rgb[3];
+	rgb[0] = w->r(); rgb[1] = w->g(); rgb[2] = w->b();
+	d->c->setColor(rgb);
+	d->updateDrawing();
+}
+
+void Display::setViewCB(Fl_Button* w, Display* d) {
+	/* toggle pre-set view point based off which */
+	Camera* view = d->win->getCamera();
+	if (w->label() == "Top View") {
+		//starting view is top view
+		std::cout << "Top View enabled" << std::endl;
+		view->setTheta(0);
+		d->updateDrawing();
+	}
+	else if (w->label() == "Front View") {
+		std::cout << "Front View enabled" << std::endl;
+		view->setTheta(90);
+		d->updateDrawing();
+	}
 }
 
 void Display::wireCB(Fl_Button* w, Controller* c) {

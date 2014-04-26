@@ -15,4 +15,7 @@ class Camera{
 		void increaseRad(float inc);		// increase the radius
 		vec4 getEye();		// get the current eye position
 		vec4 getUp();		// get the current up vector
+		void setPhi(float inc);				// set the phi angle. use for default camera views
+		void setTheta(float inc);			// set the theta angle.
+		void setRad(float inc);
 };

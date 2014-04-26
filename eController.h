@@ -31,6 +31,7 @@ class Controller{
 		const double getRed();
 		const double getGreen();
 		const double getBlue();
+		void setColor(double rgb[3]);
 		void toggleWireFrame();				// toggle wireframe mode on/off
 		void setPoly(mat4 m);				// set a face with new/edited vertices
 		void setMesh(Mesh* mesh);				// set a new mesh

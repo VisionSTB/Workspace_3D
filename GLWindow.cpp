@@ -118,3 +118,7 @@ int GLWindow::handle(int event){		// handle keyboard and mouse events
 	//}
 	return Fl_Gl_Window::handle(event);
 }
+
+Camera* GLWindow::getCamera() {
+	return c;
+}

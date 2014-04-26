@@ -15,6 +15,7 @@ class GLWindow : public Fl_Gl_Window{
 		int handle(int event);		// handle keyboard events
 	public:
 		GLWindow(int x, int y, int w, int h); 
+		Camera* getCamera();
 };
 
 #endif

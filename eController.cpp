@@ -62,6 +62,10 @@ const double Controller::getBlue() {
 	return m->getBlue();
 }
 
+void Controller::setColor(double rgb[3]) {
+	m->setColor(rgb);
+}
+
 const int Controller::getSelected(){			// Get which face has been selected
 	return selected;
 }
