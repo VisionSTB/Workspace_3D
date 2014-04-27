@@ -16,10 +16,10 @@ class Mesh {
 		int wireframe;			// toggle wireframe = 1
 		int numCols;
 		int numRows;
-		int numPolys;				// number of faces
-		double rowWidth;
-		double colDepth;
-		double color[3];
+		int numPolys;			// number of faces
+		double rowWidth;		// width of each row
+		double colDepth;		// depth of each column
+		double color[3];		// rgb color
 		std::vector<std::vector<vec4> > v;  /* vector of vectors, sub-vectors 
 											  hold vertices for a row */
 	public:

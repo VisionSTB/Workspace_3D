@@ -31,7 +31,7 @@ void GLWindow::draw(){
 	
 	Fl_Group *g = this->parent();	// get a pointer to the FL display window
 	Display *d = (Display*)(g);
-
+	
 	for (int i = 0; i < d->numPolys(); i++){
 
 		//if (i == d->getSelected())
@@ -90,6 +90,40 @@ int GLWindow::handle(int event){		// handle keyboard and mouse events
 			c->increaseRad(.5);					
 			redraw();
 		}
+	}
+	if (event == FL_PUSH) // in Fl_Gl_Window handle method 
+	{
+		float x = Fl::event_x();
+		float y = Fl::event_y();
+		std::cout << "Someone clicked " << x << ", " << y << std::endl;
+		// change to normalized device coordinates 
+		//y = h() – y; ? ? ? ?
+		x = x / this->w();
+		y = y / this->h();
+
+		// coordinate of eye 
+		vec4 eye = vec4(c->getEye()[0], c->getEye()[1], c->getEye()[2], 0);
+		// up vector 
+		vec4 up = vec4(c->getUp()[0], c->getUp()[1], c->getUp()[2], 0);
+		// get viewing vector 
+		vec4 center = vec4(0, 0, 0, 0); // different if center moves 
+		vec4 G = center - eye;
+		// half viewing angles depend on perspective setup 
+		float fi = 30.0 * 3.14159 / 180.0;
+		float theda = 30.0 * 3.14159 / 180.0;
+		vec4 A = G^up;
+		vec4 B = A^G;
+		vec4 M = eye + G;
+
+		vec4 H = (A*(G.length()*tan(theda))) / A.length();
+		vec4 V = (B*(G.length()*tan(fi))) / B.length();
+
+		vec4 P = M + (2 * x - 1)*H + (2 * y - 1)*V;
+		std::cout << "The point is " << P[0] << ", " << P[1] << ", " << P[2] << std::endl;
+
+		// The ray is: where t goes from 0 to infinity 
+		double t = 2;
+		vec4 R = eye + t*(P - eye) / (P - eye).length();
 	}
 	//if (event == FL_PUSH){
 	//	if (Fl::event_button() == FL_RIGHT_MOUSE){

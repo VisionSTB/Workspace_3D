@@ -117,8 +117,10 @@ void Mesh::buildVertices() {
 	// fill in with vertices
 	for (int i = 0; i < numRows+1 ; i++) {
 		for (int j = 0; j < numCols+1; j++) {
+			double z = std::rand() % 2;
 			v[i][j] = vec4((double)i*rowWidth-((rowWidth*numCols)/2), 
-							(double)j*colDepth-((colDepth*numRows)/2), 0, 0);
+							(double)j*colDepth-((colDepth*numRows)/2), 
+							z, 0);
 		}
 	}
 	v[0][0] = (vec4)v[0][0] * translation3D(vec3(-1, -1, 0));
