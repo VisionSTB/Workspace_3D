@@ -14,11 +14,12 @@
 class Mesh {
 	private:
 		int wireframe;			// toggle wireframe = 1
-		int numCols;
-		int numRows;
+		int numCols;			// number of columns in terms of faces
+		int numRows;			// number of rows in terms of faces
 		int numPolys;			// number of faces
 		double rowWidth;		// width of each row
 		double colDepth;		// depth of each column
+		int maxHeight = 3;	// maximun z value for height to the mesh
 		double color[3];		// rgb color
 		std::vector<std::vector<vec4> > v;  /* vector of vectors, sub-vectors 
 											  hold vertices for a row */
@@ -39,6 +40,7 @@ class Mesh {
 		const double getGreen();					// return green value
 		const double getBlue();						// return blue value
 		const mat4 getQuad(int q);					// get a Quad from vertices
+		const vec4 getVertex(int r, int c);			// get a vertex
 		std::vector<std::vector<vec4>> getVertices();
 		
 		void setWireFrame(int n);					// toggle wireframe status
@@ -47,11 +49,13 @@ class Mesh {
 		void setRowWidth(double n);					// set width of each row
 		void setColDepth(double n);					// set depth of each column
 		void setColor(double rgb[3]);				// set color of the mesh
+		void setVertex(int r, int c, vec4 vertex);	// change a vertex
 		void setVertices(std::vector<std::vector<vec4>> newV);
 		///////////////////////////
-		// functions //////////////
+		// Other functions //////////////
 		///////////////////////////
 		void buildVertices();						// construct vertice based on fields
-		void printVertices();
+		void printVertices();						// print each vertice in the mesh
+		void sub_divide(int n);						// sub-divide n times
 
 };

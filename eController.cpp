@@ -62,8 +62,21 @@ const double Controller::getBlue() {
 	return m->getBlue();
 }
 
+const double Controller::getZ(int r, int c) {
+	return ((vec4)m->getVertex(r, c))[2];
+}
+
+const vec4 Controller::getVertex(int r, int c) {
+	return m->getVertex(r, c);
+}
+
 void Controller::setColor(double rgb[3]) {
 	m->setColor(rgb);
+}
+
+void Controller::setVertex(int r, int c, vec4 v) {
+	m->setVertex(r, c, v);
+	d->updateDrawing();
 }
 
 const int Controller::getSelected(){			// Get which face has been selected

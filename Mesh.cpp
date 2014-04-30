@@ -69,6 +69,10 @@ const mat4 Mesh::getQuad(int q) {
 	return mat4(v[i][j], v[i][j + 1], v[i + 1][j + 1], v[i + 1][j]); 
 }
 
+const vec4 Mesh::getVertex(int r, int c) {
+	return v[r][c];
+}
+
 std::vector<std::vector<vec4>> Mesh::getVertices() {
 	return v;
 }
@@ -99,6 +103,10 @@ void Mesh::setColor(double rgb[3]) {
 	color[2] = rgb[2];
 }
 
+void Mesh::setVertex(int r, int c, vec4 vertex) {
+	v[r][c] = vertex;
+}
+
 void Mesh::setVertices(std::vector<std::vector<vec4>> newV) {
 	v = newV;
 }
@@ -117,7 +125,7 @@ void Mesh::buildVertices() {
 	// fill in with vertices
 	for (int i = 0; i < numRows+1 ; i++) {
 		for (int j = 0; j < numCols+1; j++) {
-			double z = std::rand() % 2;
+			double z = std::rand() % maxHeight;
 			v[i][j] = vec4((double)i*rowWidth-((rowWidth*numCols)/2), 
 							(double)j*colDepth-((colDepth*numRows)/2), 
 							z, 0);

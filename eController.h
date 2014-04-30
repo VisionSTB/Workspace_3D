@@ -31,10 +31,13 @@ class Controller{
 		const double getRed();
 		const double getGreen();
 		const double getBlue();
+		const double getZ(int r, int c);	// get z value of vertex at given row and col
+		const vec4 getVertex(int r, int c);	// get vertex at r,c
 		void setColor(double rgb[3]);
 		void toggleWireFrame();				// toggle wireframe mode on/off
 		void setPoly(mat4 m);				// set a face with new/edited vertices
-		void setMesh(Mesh* mesh);				// set a new mesh
+		void setMesh(Mesh* mesh);			// set a new mesh
+		void setVertex(int r, int c, vec4 v); // set a new vertex at row r and col c
 		const int getSelected();			// Get which face has been selected
 		void select(int i);					// Set the selected face
 //		void extrudeSelected(float depth);	// Perform an extrusion

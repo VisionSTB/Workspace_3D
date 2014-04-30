@@ -19,6 +19,9 @@ private:
 	Fl_Simple_Counter* depthCounter; // counter to increase/decrease column depth
 	Fl_Button* newMeshB;			// button to build new mesh 
 	Fl_Button* smoothB;			// button to smooth out mesh with subdivision
+	Fl_Simple_Counter* rowVertexC;	// counter to select a row for a vertex
+	Fl_Simple_Counter* colVertexC;	// counter to select a vertex by column in the row
+	Fl_Counter* zValCounter;	// counter to adjust the z value of a vertex
 	Fl_Button* topViewB;		// button to view mesh from above
 	Fl_Button* frontViewB;		// button to view mesh from in front
 	//Fl_Hold_Browser* browser;	// show a list of the faces to choose from
@@ -50,6 +53,8 @@ public:
 	static void newMeshCB(Fl_Button* w, Display* d);
 	static void smoothCB(Fl_Button* w, Controller* c);
 	static void pickColorCB(Fl_Color_Chooser* w, Display* d);
+	static void vertexCB(Fl_Simple_Counter* w, Display* d);
+	static void adjVertexCB(Fl_Counter* w, Display* d);
 	static void setViewCB(Fl_Button* w, Display* d);
 	static void wireCB(Fl_Button* w, Controller* d);
 	static void printCB(Fl_Button* w, Controller* d);
