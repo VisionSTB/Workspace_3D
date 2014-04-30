@@ -131,6 +131,7 @@ void Controller::toggleWireFrame() {
 
 void Controller::smoothMesh(int n) {
 	m->sub_divide(n);
+	d->updateDrawing();
 }
 
 //void Controller::rotate_cube()

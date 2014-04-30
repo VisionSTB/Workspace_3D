@@ -19,7 +19,7 @@ class Mesh {
 		int numPolys;			// number of faces
 		double rowWidth;		// width of each row
 		double colDepth;		// depth of each column
-		int maxHeight = 3;	// maximun z value for height to the mesh
+		int maxHeight = 2;	// maximun z value for height to the mesh
 		double color[3];		// rgb color
 		std::vector<std::vector<vec4> > v;  /* vector of vectors, sub-vectors 
 											  hold vertices for a row */

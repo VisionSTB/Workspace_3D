@@ -108,6 +108,14 @@ void Mesh::setVertex(int r, int c, vec4 vertex) {
 }
 
 void Mesh::setVertices(std::vector<std::vector<vec4>> newV) {
+	numRows = newV.size() - 1;
+	numCols = newV[0].size() - 1;
+	numPolys = numRows * numCols;
+	v.clear();
+	// resize 2D vector
+	v.resize(numRows + 1);
+	for (int i = 0; i < numRows + 1; i++)
+		v[i].resize(numCols + 1);
 	v = newV;
 }
 
@@ -149,40 +157,47 @@ void Mesh::sub_divide(int n) {
 	// make a new 2D vector to hold sub-divided mesh
 	int sub_numRows = 2 * numRows;
 	int sub_numCols = 2 * numCols;
-	std::vector<std::vector<vec4> > subMesh(sub_numRows + 1,
+	std::vector<std::vector<vec4> > sub_Vert(sub_numRows + 1,
 						std::vector<vec4>(sub_numCols + 1));
 	std::cout << "old mesh vertex count: " << v.size() << std::endl;
-	std::cout << "new mesh vertex count: " << subMesh.size() << std::endl;
+	std::cout << "new mesh vertex count: " << sub_Vert.size() << std::endl;
+	std::cout << "new mesh sub size: " << sub_Vert[0].size() << std::endl;
 	for (int i = 0; i < sub_numRows + 1; i++) {
 		if (i % 2 == 0) {	// original row
 			for (int j = 0; j < sub_numCols + 1; j++) {
-				if (i % 2 == 0) {	
+				if (j == sub_numRows || j % 2 == 0) {	
 					// assign original vertex
-					subMesh[i][j] = v[i / 2][j / 2];
+					std::cout << "1" << std::endl;
+					sub_Vert[i][j] = v[i / 2][j / 2];
 				}
 				else {
 					// assign new vertex between originals (avg)
-					subMesh[i][j] = vec4((v[i][j / 2 + 1][0] + v[i][j / 2 - 1][0]) / 2, // average x
-						(v[i][j / 2 + 1][1] + v[i][j / 2 - 1][1]) / 2,	// average y
-						(v[i][j / 2 + 1][2] + v[i][j / 2 - 1][2]) / 2,	// average z
-						0);
+					double x = (v[i / 2][(j + 1) / 2][0] + v[i / 2][(j - 1) / 2][0]) / 2; // average x
+					double y = (v[i / 2][(j + 1) / 2][1] + v[i / 2][(j - 1) / 2][1]) / 2; // average y
+					double z = (v[i / 2][(j + 1) / 2][2] + v[i / 2][(j - 1) / 2][2]) / 2; // average z
+					sub_Vert[i][j] = vec4(x, y, z, 0);
 				}
 			}
 		}
 		else {				// new row between originals
 			for (int j = 0; j < sub_numCols + 1; j++) {
-				if (i % 2 == 0) {	
+				if (j == sub_numRows || j % 2 == 0) {
 					// assign vertex between original prev. row and next row
-					subMesh[i][j] = vec4((v[i / 2 + 1][j / 2][0] + v[i / 2 - 1][j / 2][0]) / 2,	//average x
-						(v[i / 2 + 1][j / 2][1] + v[i / 2 - 1][j / 2][1]) / 2,	//average y
-						(v[i / 2 + 1][j / 2][2] + v[i / 2 - 1][j / 2][2]) / 2,	//average z
-						0);
+					double x = (v[i / 2 + 1][j / 2][0] + v[i / 2][j / 2][0]) / 2; //average x
+					double y = (v[i / 2 + 1][j / 2][1] + v[i / 2][j / 2][1]) / 2; //average y
+					double z = (v[i / 2 + 1][j / 2][2] + v[i / 2][j / 2][2]) / 2; //average z
+					sub_Vert[i][j] = vec4(x, y, z, 0);
 				}
 				else {
 					// get avg of 4 pts of quad, to get its center
-
+					sub_Vert[i][j] = ( v[(i - 1) / 2][(j - 1) / 2]		 // Top Left
+									+ v[(i - 1) / 2][(j + 1) / 2]		 // Top Right
+									+ v[(i + 1) / 2][(j - 1) / 2]		 // Bottom Left
+									+ v[(i + 1) / 2][(j + 1) / 2] ) / 4; // Bottom right, and avg
 				}
 			}
 		}
 	}
+	setVertices(sub_Vert);		// assign the new vertices to Mesh
+	//printVertices();
 }
