@@ -143,3 +143,46 @@ void Mesh::printVertices() {
 		}
 	}
 }
+
+void Mesh::sub_divide(int n) {
+	/* sub-divide mesh n times */
+	// make a new 2D vector to hold sub-divided mesh
+	int sub_numRows = 2 * numRows;
+	int sub_numCols = 2 * numCols;
+	std::vector<std::vector<vec4> > subMesh(sub_numRows + 1,
+						std::vector<vec4>(sub_numCols + 1));
+	std::cout << "old mesh vertex count: " << v.size() << std::endl;
+	std::cout << "new mesh vertex count: " << subMesh.size() << std::endl;
+	for (int i = 0; i < sub_numRows + 1; i++) {
+		if (i % 2 == 0) {	// original row
+			for (int j = 0; j < sub_numCols + 1; j++) {
+				if (i % 2 == 0) {	
+					// assign original vertex
+					subMesh[i][j] = v[i / 2][j / 2];
+				}
+				else {
+					// assign new vertex between originals (avg)
+					subMesh[i][j] = vec4((v[i][j / 2 + 1][0] + v[i][j / 2 - 1][0]) / 2, // average x
+						(v[i][j / 2 + 1][1] + v[i][j / 2 - 1][1]) / 2,	// average y
+						(v[i][j / 2 + 1][2] + v[i][j / 2 - 1][2]) / 2,	// average z
+						0);
+				}
+			}
+		}
+		else {				// new row between originals
+			for (int j = 0; j < sub_numCols + 1; j++) {
+				if (i % 2 == 0) {	
+					// assign vertex between original prev. row and next row
+					subMesh[i][j] = vec4((v[i / 2 + 1][j / 2][0] + v[i / 2 - 1][j / 2][0]) / 2,	//average x
+						(v[i / 2 + 1][j / 2][1] + v[i / 2 - 1][j / 2][1]) / 2,	//average y
+						(v[i / 2 + 1][j / 2][2] + v[i / 2 - 1][j / 2][2]) / 2,	//average z
+						0);
+				}
+				else {
+					// get avg of 4 pts of quad, to get its center
+
+				}
+			}
+		}
+	}
+}

@@ -129,6 +129,10 @@ void Controller::toggleWireFrame() {
 	d->updateDrawing();
 }
 
+void Controller::smoothMesh(int n) {
+	m->sub_divide(n);
+}
+
 //void Controller::rotate_cube()
 //{
 //	Controller* control = this;

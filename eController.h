@@ -42,6 +42,9 @@ class Controller{
 		void select(int i);					// Set the selected face
 //		void extrudeSelected(float depth);	// Perform an extrusion
 		void printVertices();				// print vertices of the mesh
+		void smoothMesh(int n);				// smooth mesh with sub-division
+
+
 		//void cb_startb(void) { Fl::add_timeout(0.5, rotatingCB); }
 		void Controller::rotate_cube();		// rotate cube
 
