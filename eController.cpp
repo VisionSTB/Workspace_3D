@@ -25,12 +25,10 @@ const double Controller::getRate() {
 }
 
 const int Controller::numPolys(){				// Get the number of faces
-	//return faces.size();
 	return m->getNumPolys();
 }
 
 const mat4 Controller::getPoly(int i){			// Get a certain face
-	//return faces[i]->getPoints();
 	return m->getQuad(i);
 }
 

@@ -64,9 +64,10 @@ const double Mesh::getBlue() {
 const mat4 Mesh::getQuad(int q) {
 	/* get the face starting at origin i,j
 		faces are in ascending order from left to right, up to down */
-	int i = q / numRows;
+	int i = q / numCols;
 	int j = q % numCols;
-	return mat4(v[i][j], v[i][j + 1], v[i + 1][j + 1], v[i + 1][j]); 
+	mat4 m = mat4(v[i][j], v[i][j + 1], v[i + 1][j + 1], v[i + 1][j]); 
+	return m;
 }
 
 const vec4 Mesh::getVertex(int r, int c) {
@@ -133,7 +134,7 @@ void Mesh::buildVertices() {
 	// fill in with vertices
 	for (int i = 0; i < numRows+1 ; i++) {
 		for (int j = 0; j < numCols+1; j++) {
-			double z = std::rand() % maxHeight;
+			double z = std::rand() % MAXHEIGHT;
 			v[i][j] = vec4((double)i*rowWidth-((rowWidth*numCols)/2), 
 							(double)j*colDepth-((colDepth*numRows)/2), 
 							z, 0);

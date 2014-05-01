@@ -31,9 +31,7 @@ void GLWindow::draw(){
 	
 	Fl_Group *g = this->parent();	// get a pointer to the FL display window
 	Display *d = (Display*)(g);
-	
 	for (int i = 0; i < d->numPolys(); i++){
-
 		//if (i == d->getSelected())
 		//	glColor3f(1, 0, 0);
 		//else 

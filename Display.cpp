@@ -135,6 +135,8 @@ void Display::adjVertexCB(Fl_Counter* w, Display* d) {
 void Display::newMeshCB(Fl_Button* w, Display* d) {
 	/* construct a new mesh based off user input from the counters 
 		and adjust vertex selectors to new range					*/
+	std::cout << d->rowCounter->value() << " rows" << std::endl;
+	std::cout << d->colCounter->value() << " columns" << std::endl;
 	int numCols = d->colCounter->value();
 	int numRows = d->rowCounter->value();
 	double rowWidth = d->widthCounter->value();
