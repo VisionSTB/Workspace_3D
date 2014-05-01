@@ -26,9 +26,7 @@ private:
 	Fl_Button* frontViewB;		// button to view mesh from in front
 	//Fl_Hold_Browser* browser;	// show a list of the faces to choose from
 	Fl_Color_Chooser* pickColor;// select a color for the new mesh
-	Fl_Value_Slider* slider;	// set the extrusion value
 	GLWindow* win;				// the OpenGL window
-//	Fl_Button* myButton;		// button to execute the extrusion
 	Fl_Button* wireB;			// button to display the wireframe on/off
 	Fl_Button* printB;			// button to print mesh vertices
 	Controller* c;				// pointer back to the controller
@@ -58,7 +56,6 @@ public:
 	static void setViewCB(Fl_Button* w, Display* d);
 	static void wireCB(Fl_Button* w, Controller* d);
 	static void printCB(Fl_Button* w, Controller* d);
-//	static void extrudeCB(Fl_Button* w, Controller* d);
 	//static void selectCB(Fl_Hold_Browser* w, Controller* d);
 };
 

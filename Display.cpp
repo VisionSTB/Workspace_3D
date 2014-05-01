@@ -58,14 +58,6 @@ Display::Display(int x, int y, int w, int h, Controller* c):Fl_Window(x, y, w, h
 
 		frontViewB = new Fl_Button(w / 10, h - 90, w / 10, 20, "Front View");
 		frontViewB->callback((void(*)(Fl_Widget*, void*))setViewCB, (void*)this);
-
-		slider = new Fl_Value_Slider(0, h-50, w/5, 20);
-		slider->range(1, 10);
-		slider->value(2);
-		slider->type(FL_HORIZONTAL);
-		
-//		myButton = new Fl_Button(0, h-30, w/5, 20, "Extrude");
-//		myButton->callback((void(*)(Fl_Widget*, void*))extrudeCB, (void*)c);
 		
 		wireB = new Fl_Button(0, h - 70, w / 5, 20, "Wireframe");
 		wireB->callback((void(*)(Fl_Widget*, void*))wireCB, (void*)c);
@@ -107,9 +99,6 @@ const double Display::getGreen() {
 const double Display::getBlue() {
 	return c->getBlue();
 }
-//const float Display::getExtrude(){
-//	return slider->value();
-//}
 
 void Display::rowCounterCB(Fl_Simple_Counter* w, Controller* c) {
 	/* not using atm */
@@ -193,11 +182,3 @@ void Display::wireCB(Fl_Button* w, Controller* c) {
 void Display::printCB(Fl_Button* w, Controller* c) {
 	c->printVertices();
 }
-
-//void Display::extrudeCB(Fl_Button* w, Controller* c){
-//	c->extrudeSelected(((Display*)(w->parent()))->getExtrude());
-//}
-
-//void Display::selectCB(Fl_Hold_Browser* w, Controller* c){
-//	c->select(w->value()-1);
-//}

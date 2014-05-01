@@ -12,7 +12,6 @@ class Controller{
 		double rate = 0.5;
 		double rotation = 10.0;
 		vec3 axis = vec3(0, rate, 0);
-		//std::vector<Face*> faces;	// Store all of the faces/polygons in the scene
 		Mesh* m;					// a pointer to the mesh, which stores vertices
 		int selected;				// Which face is currently selected
 		Display* d;					// A pointer to the display mechanisms
@@ -40,14 +39,7 @@ class Controller{
 		void setVertex(int r, int c, vec4 v); // set a new vertex at row r and col c
 		const int getSelected();			// Get which face has been selected
 		void select(int i);					// Set the selected face
-//		void extrudeSelected(float depth);	// Perform an extrusion
 		void printVertices();				// print vertices of the mesh
 		void smoothMesh(int n);				// smooth mesh with sub-division
-
-
-		//void cb_startb(void) { Fl::add_timeout(0.5, rotatingCB); }
-		void Controller::rotate_cube();		// rotate cube
-
-		static void callback(void* data);	// Callback to rotate cube
 
 };

@@ -160,7 +160,6 @@ void Mesh::sub_divide(int n) {
 		std::vector<std::vector<vec4> > sub_Vert(sub_numRows + 1,
 			std::vector<vec4>(sub_numCols + 1));
 		/* for each new row(odd index), set center to Average of original face points */
-		std::cout << "set face points" << std::endl;
 		for (int i = 1; i <= sub_numRows; i = i + 2) {	// odd rows
 			for (int j = 1; j <= sub_numCols; j = j + 2) {	// odd columns
 				// get avg of 4 pts of quad, to get its center (face vertex)
@@ -172,8 +171,6 @@ void Mesh::sub_divide(int n) {
 		}
 		/* for each edge, edge points = average of 2 neigbor face centers & 2 original points */
 		// Horizontal edges
-		std::cout << "set horizontal mid-edge points" << std::endl;
-		std::cout << "v size is " << numRows + 1 << " by " << numCols + 1 << std::endl;
 		for (int i = 0; i <= sub_numRows; i = i + 2) {	// even rows
 			for (int j = 1; j <= sub_numCols; j = j + 2) {	// odd columns
 				int n = 2;						// 2 edges, one to the left, one to the right, plus whatever face points that touch
@@ -191,7 +188,6 @@ void Mesh::sub_divide(int n) {
 			}
 		}
 		// Vertical edges
-		std::cout << "set vertical mid-edge points" << std::endl;
 		for (int i = 1; i <= sub_numRows; i = i + 2) { // odd rows
 			for (int j = 0; j <= sub_numCols; j = j + 2) { // even columns
 				int n = 2;						// 2 edges, one above, one below, plus whatever face points that touch
@@ -211,7 +207,6 @@ void Mesh::sub_divide(int n) {
 		/* for each original point P, average all adjacent face points
 			than average all edge points touching P, and calculate new position of P
 			// using formula at wikipedia //	*/
-		std::cout << "adjust original points" << std::endl;
 		for (int i = 0; i <= sub_numRows; i = i + 2) {	// even rows
 			for (int j = 0; j <= sub_numCols; j = j + 2) { // even columns
 				vec4 p = v[i / 2][j / 2];		// original point
