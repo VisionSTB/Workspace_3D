@@ -152,57 +152,8 @@ void Mesh::printVertices() {
 	}
 }
 
-//void Mesh::sub_divide(int n) {
-//	/* sub-divide mesh n times */
-//	while (n >= 1) {
-//		// make a new 2D vector to hold sub-divided mesh
-//		int sub_numRows = 2 * numRows;
-//		int sub_numCols = 2 * numCols;
-//		std::vector<std::vector<vec4> > sub_Vert(sub_numRows + 1,
-//							std::vector<vec4>(sub_numCols + 1));
-//		for (int i = 0; i < sub_numRows + 1; i++) {
-//			if (i % 2 == 0) {	// original row
-//				for (int j = 0; j < sub_numCols + 1; j++) {
-//					if (j == sub_numRows || j % 2 == 0) {	
-//						// assign original vertex
-//						sub_Vert[i][j] = v[i / 2][j / 2];
-//					}
-//					else {
-//						// assign new vertex between originals (edge vertex)
-//						double x = (v[i / 2][(j + 1) / 2][0] + v[i / 2][(j - 1) / 2][0]) / 2; // average x
-//						double y = (v[i / 2][(j + 1) / 2][1] + v[i / 2][(j - 1) / 2][1]) / 2; // average y
-//						double z = (v[i / 2][(j + 1) / 2][2] + v[i / 2][(j - 1) / 2][2]) / 2; // average z
-//						sub_Vert[i][j] = vec4(x, y, z, 0);
-//					}
-//				}
-//			}
-//			else {				// new row between originals
-//				for (int j = 0; j < sub_numCols + 1; j++) {
-//					if (j == sub_numRows || j % 2 == 0) {
-//						// assign vertex between original prev. row and next row (edge vertex)
-//						double x = (v[i / 2 + 1][j / 2][0] + v[i / 2][j / 2][0]) / 2; //average x
-//						double y = (v[i / 2 + 1][j / 2][1] + v[i / 2][j / 2][1]) / 2; //average y
-//						double z = (v[i / 2 + 1][j / 2][2] + v[i / 2][j / 2][2]) / 2; //average z
-//						sub_Vert[i][j] = vec4(x, y, z, 0);
-//					}
-//					else {
-//						// get avg of 4 pts of quad, to get its center (face vertex)
-//						sub_Vert[i][j] = ( v[(i - 1) / 2][(j - 1) / 2]		 // Top Left
-//										+ v[(i - 1) / 2][(j + 1) / 2]		 // Top Right
-//										+ v[(i + 1) / 2][(j - 1) / 2]		 // Bottom Left
-//										+ v[(i + 1) / 2][(j + 1) / 2] ) / 4; // Bottom right, and avg
-//					}
-//				}
-//			}
-//		}
-//		setVertices(sub_Vert);		// assign the new vertices to Mesh
-//		//printVertices();
-//		/* subdivides fine, but is still sharp... */
-//		n--;
-//	}
-//}
-
 void Mesh::sub_divide(int n) {
+	/* Implement Catmull-Clark subdivision on mesh */
 	while (n >= 1) {	// sub-divide n times
 		int sub_numRows = 2 * numRows;
 		int sub_numCols = 2 * numCols;
