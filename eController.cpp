@@ -14,7 +14,12 @@ Controller::Controller(){
 	//Fl::add_timeout(rate, callback, this);   // callback to rotate cube
 }
 
-Controller::~Controller(){};
+Controller::~Controller(){
+	delete(m);
+	delete(d);
+	m = NULL;
+	d = NULL;
+}
 
 const int Controller::isWireFrame() {			// is the mesh in wireframe mode?
 	return m->getWireFrame();
@@ -82,7 +87,7 @@ const int Controller::getSelected(){			// Get which face has been selected
 }
 
 void Controller::setMesh(Mesh* mesh) {
-	free(m);
+	delete(m);
 	m = mesh;
 	std::cout << "new mesh" << std::endl;
 	d->updateDrawing();
