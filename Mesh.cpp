@@ -302,7 +302,8 @@ void Mesh::sub_divide(int n) {
 				}
 				f = f / nf;			// average faces
 				r = r / ne;			// average edges
-				p = (f / ne) + (2 * r / ne) + ((p*(n - 3)) / ne);
+				int n = ne + nf;
+				p = (f / n) + (2 * r / n) + ((p*(n - 3)) / n);
 				sub_Vert[i][j] = p;
 			}
 		}
