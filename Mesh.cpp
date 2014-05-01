@@ -152,52 +152,161 @@ void Mesh::printVertices() {
 	}
 }
 
+//void Mesh::sub_divide(int n) {
+//	/* sub-divide mesh n times */
+//	while (n >= 1) {
+//		// make a new 2D vector to hold sub-divided mesh
+//		int sub_numRows = 2 * numRows;
+//		int sub_numCols = 2 * numCols;
+//		std::vector<std::vector<vec4> > sub_Vert(sub_numRows + 1,
+//							std::vector<vec4>(sub_numCols + 1));
+//		for (int i = 0; i < sub_numRows + 1; i++) {
+//			if (i % 2 == 0) {	// original row
+//				for (int j = 0; j < sub_numCols + 1; j++) {
+//					if (j == sub_numRows || j % 2 == 0) {	
+//						// assign original vertex
+//						sub_Vert[i][j] = v[i / 2][j / 2];
+//					}
+//					else {
+//						// assign new vertex between originals (edge vertex)
+//						double x = (v[i / 2][(j + 1) / 2][0] + v[i / 2][(j - 1) / 2][0]) / 2; // average x
+//						double y = (v[i / 2][(j + 1) / 2][1] + v[i / 2][(j - 1) / 2][1]) / 2; // average y
+//						double z = (v[i / 2][(j + 1) / 2][2] + v[i / 2][(j - 1) / 2][2]) / 2; // average z
+//						sub_Vert[i][j] = vec4(x, y, z, 0);
+//					}
+//				}
+//			}
+//			else {				// new row between originals
+//				for (int j = 0; j < sub_numCols + 1; j++) {
+//					if (j == sub_numRows || j % 2 == 0) {
+//						// assign vertex between original prev. row and next row (edge vertex)
+//						double x = (v[i / 2 + 1][j / 2][0] + v[i / 2][j / 2][0]) / 2; //average x
+//						double y = (v[i / 2 + 1][j / 2][1] + v[i / 2][j / 2][1]) / 2; //average y
+//						double z = (v[i / 2 + 1][j / 2][2] + v[i / 2][j / 2][2]) / 2; //average z
+//						sub_Vert[i][j] = vec4(x, y, z, 0);
+//					}
+//					else {
+//						// get avg of 4 pts of quad, to get its center (face vertex)
+//						sub_Vert[i][j] = ( v[(i - 1) / 2][(j - 1) / 2]		 // Top Left
+//										+ v[(i - 1) / 2][(j + 1) / 2]		 // Top Right
+//										+ v[(i + 1) / 2][(j - 1) / 2]		 // Bottom Left
+//										+ v[(i + 1) / 2][(j + 1) / 2] ) / 4; // Bottom right, and avg
+//					}
+//				}
+//			}
+//		}
+//		setVertices(sub_Vert);		// assign the new vertices to Mesh
+//		//printVertices();
+//		/* subdivides fine, but is still sharp... */
+//		n--;
+//	}
+//}
+
 void Mesh::sub_divide(int n) {
-	/* sub-divide mesh n times */
-	// make a new 2D vector to hold sub-divided mesh
-	int sub_numRows = 2 * numRows;
-	int sub_numCols = 2 * numCols;
-	std::vector<std::vector<vec4> > sub_Vert(sub_numRows + 1,
-						std::vector<vec4>(sub_numCols + 1));
-	std::cout << "old mesh vertex count: " << v.size() << std::endl;
-	std::cout << "new mesh vertex count: " << sub_Vert.size() << std::endl;
-	std::cout << "new mesh sub size: " << sub_Vert[0].size() << std::endl;
-	for (int i = 0; i < sub_numRows + 1; i++) {
-		if (i % 2 == 0) {	// original row
-			for (int j = 0; j < sub_numCols + 1; j++) {
-				if (j == sub_numRows || j % 2 == 0) {	
-					// assign original vertex
-					std::cout << "1" << std::endl;
-					sub_Vert[i][j] = v[i / 2][j / 2];
-				}
-				else {
-					// assign new vertex between originals (avg)
-					double x = (v[i / 2][(j + 1) / 2][0] + v[i / 2][(j - 1) / 2][0]) / 2; // average x
-					double y = (v[i / 2][(j + 1) / 2][1] + v[i / 2][(j - 1) / 2][1]) / 2; // average y
-					double z = (v[i / 2][(j + 1) / 2][2] + v[i / 2][(j - 1) / 2][2]) / 2; // average z
-					sub_Vert[i][j] = vec4(x, y, z, 0);
-				}
+	while (n >= 1) {	// sub-divide n times
+		int sub_numRows = 2 * numRows;
+		int sub_numCols = 2 * numCols;
+		std::vector<std::vector<vec4> > sub_Vert(sub_numRows + 1,
+			std::vector<vec4>(sub_numCols + 1));
+		/* for each new row(odd index), set center to Average of original face points */
+		std::cout << "set face points" << std::endl;
+		for (int i = 1; i <= sub_numRows; i = i + 2) {	// odd rows
+			for (int j = 1; j <= sub_numCols; j = j + 2) {	// odd columns
+				// get avg of 4 pts of quad, to get its center (face vertex)
+				sub_Vert[i][j] = (v[(i - 1) / 2][(j - 1) / 2]		 // Top Left
+								+ v[(i - 1) / 2][(j + 1) / 2]		 // Top Right
+								+ v[(i + 1) / 2][(j - 1) / 2]		 // Bottom Left
+								+ v[(i + 1) / 2][(j + 1) / 2]) / 4; // Bottom right, and avg
 			}
 		}
-		else {				// new row between originals
-			for (int j = 0; j < sub_numCols + 1; j++) {
-				if (j == sub_numRows || j % 2 == 0) {
-					// assign vertex between original prev. row and next row
-					double x = (v[i / 2 + 1][j / 2][0] + v[i / 2][j / 2][0]) / 2; //average x
-					double y = (v[i / 2 + 1][j / 2][1] + v[i / 2][j / 2][1]) / 2; //average y
-					double z = (v[i / 2 + 1][j / 2][2] + v[i / 2][j / 2][2]) / 2; //average z
-					sub_Vert[i][j] = vec4(x, y, z, 0);
+		/* for each edge, edge points = average of 2 neigbor face centers & 2 original points */
+		// Horizontal edges
+		std::cout << "set horizontal mid-edge points" << std::endl;
+		std::cout << "v size is " << numRows + 1 << " by " << numCols + 1 << std::endl;
+		for (int i = 0; i <= sub_numRows; i = i + 2) {	// even rows
+			for (int j = 1; j <= sub_numCols; j = j + 2) {	// odd columns
+				int n = 2;						// 2 edges, one to the left, one to the right, plus whatever face points that touch
+				vec4 avgVertex = v[i / 2][(j - 1) / 2] + v[i / 2][(j + 1) / 2];
+				if (i != 0) {					// if not top edge, look for face point above from the ones created
+					avgVertex = avgVertex + sub_Vert[i - 1][j];
+					n++;
 				}
-				else {
-					// get avg of 4 pts of quad, to get its center
-					sub_Vert[i][j] = ( v[(i - 1) / 2][(j - 1) / 2]		 // Top Left
-									+ v[(i - 1) / 2][(j + 1) / 2]		 // Top Right
-									+ v[(i + 1) / 2][(j - 1) / 2]		 // Bottom Left
-									+ v[(i + 1) / 2][(j + 1) / 2] ) / 4; // Bottom right, and avg
+				if (i != sub_numRows) {			// if not bottom edge, look for face point below
+					avgVertex = avgVertex + sub_Vert[i + 1][j];
+					n++;
 				}
+				avgVertex = avgVertex / n;		// find average of n added vertices
+				sub_Vert[i][j] = avgVertex;		// set edge point
 			}
 		}
+		// Vertical edges
+		std::cout << "set vertical mid-edge points" << std::endl;
+		for (int i = 1; i <= sub_numRows; i = i + 2) { // odd rows
+			for (int j = 0; j <= sub_numCols; j = j + 2) { // even columns
+				int n = 2;						// 2 edges, one above, one below, plus whatever face points that touch
+				vec4 avgVertex = v[(i - 1) / 2][j / 2] + v[(i + 1) / 2][j / 2];
+				if (j != 0) {					// if not left edge, look for face point to the left
+					avgVertex = avgVertex + sub_Vert[i][j - 1];
+					n++;
+				}
+				if (j != sub_numCols) {			// if not right edge, look for face point to the right
+					avgVertex = avgVertex + sub_Vert[i][j + 1];
+					n++;
+				}
+				avgVertex = avgVertex / n;		// find average of n added vertices
+				sub_Vert[i][j] = avgVertex;		// set edge point
+			}
+		}
+		/* for each original point P, average all adjacent face points
+			than average all edge points touching P, and calculate new position of P
+			// using formula at wikipedia //	*/
+		std::cout << "adjust original points" << std::endl;
+		for (int i = 0; i <= sub_numRows; i = i + 2) {	// even rows
+			for (int j = 0; j <= sub_numCols; j = j + 2) { // even columns
+				vec4 p = v[i / 2][j / 2];		// original point
+				int nf = 0;						// face counter
+				int ne = 0;						// edge counter
+				vec4 f = vec4(0, 0, 0, 0);		// average of all face points created, touching P
+				vec4 r = vec4(0, 0, 0, 0);		// average of all edge midpoints touching p
+				if (i != 0 && j != 0) {					// can check upper left
+					f = f + sub_Vert[i - 1][j - 1];
+					nf++;
+				}
+				if (i != 0 && j != sub_numCols) {		// can check upper right
+					f = f + sub_Vert[i - 1][j + 1];
+					nf++;
+				}
+				if (i != sub_numRows && j != 0) {		// can check bottom left
+					f = f + sub_Vert[i + 1][j - 1];
+					nf++;
+				}
+				if (i != sub_numRows && j != sub_numCols) {	// can check bottom right
+					f = f + sub_Vert[i + 1][j + 1];
+					nf++;
+				}
+				if (i != 0) {							// can check up
+					r = r + sub_Vert[i - 1][j];
+					ne++;
+				}
+				if (i != sub_numRows) {					// can check down
+					r = r + sub_Vert[i + 1][j];
+					ne++;
+				}
+				if (j != 0) {							// can check left
+					r = r + sub_Vert[i][j - 1];
+					ne++;
+				}
+				if (j != sub_numCols) {					// can check right
+					r = r + sub_Vert[i][j + 1];
+					ne++;
+				}
+				f = f / nf;			// average faces
+				r = r / ne;			// average edges
+				p = (f / ne) + (2 * r / ne) + ((p*(n - 3)) / ne);
+				sub_Vert[i][j] = p;
+			}
+		}
+		setVertices(sub_Vert);		// assign the new vertices to Mesh
+		n--;
 	}
-	setVertices(sub_Vert);		// assign the new vertices to Mesh
-	//printVertices();
 }

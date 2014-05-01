@@ -160,7 +160,7 @@ void Display::newMeshCB(Fl_Button* w, Display* d) {
 
 void Display::smoothCB(Fl_Button* w, Controller* c) {
 	/* use catmul-clark sub-division */
-	c->smoothMesh(2); //default sub-division by 2
+	c->smoothMesh(1); //default sub-divide 1 time 
 }
 
 void Display::pickColorCB(Fl_Color_Chooser* w, Display* d) {
