@@ -32,50 +32,50 @@ Display::Display(int x, int y, int w, int h, Controller* c):Fl_Window(x, y, w, h
 		depthCounter->value(c->getDepth());
 		depthCounter->range(0.1, 5.0);
 
-		newMeshB = new Fl_Button(0, 330, w / 5, 20, "New Mesh");
+		newMeshB = new Fl_Button(0, 330, w / 5, 30, "New Mesh");
 		newMeshB->callback((void(*)(Fl_Widget*, void*))newMeshCB, (void*)this);
 
-		smoothCounter = new Fl_Simple_Counter(0, 370, w / 5, 20, "sub-divisions");
+		smoothCounter = new Fl_Simple_Counter(0, 380, w / 5, 20, "sub-divisions");
 		smoothCounter->range(0, maxSD);  // min and max sub-divisions
 		smoothCounter->value(0);
 		smoothCounter->step(1);
 
-		smoothB = new Fl_Button(0, 410, w / 5, 20, "Smooth this Mesh");
+		smoothB = new Fl_Button(0, 420, w / 5, 30, "Smooth this Mesh");
 		smoothB->callback((void(*)(Fl_Widget*, void*))smoothCB, (void*)this);
 
-		vertBox = new Fl_Box(0, 440, w / 5, 40, "Select vertex by row/col\nand adjust z value");
+		vertBox = new Fl_Box(0, 460, w / 5, 40, "Select vertex by row/col\nand adjust z value");
 
-		rowVertexC = new Fl_Simple_Counter(0, 480, w / 10, 20, "Row");
+		rowVertexC = new Fl_Simple_Counter(0, 500, w / 10, 30, "Row");
 		rowVertexC->callback((void(*)(Fl_Widget*, void*))vertexCB, (void*)this);
 		rowVertexC->range(0, c->getNumRows()); //row zero is the 1st row
 		rowVertexC->step(1);
 
-		colVertexC = new Fl_Simple_Counter(w / 10, 480, w / 10, 20, "Column");
+		colVertexC = new Fl_Simple_Counter(w / 10, 500, w / 10, 30, "Column");
 		colVertexC->callback((void(*)(Fl_Widget*, void*))vertexCB, (void*)this);
 		colVertexC->range(0, c->getNumCols()); //column zero is the 1st column
 		colVertexC->step(1);
 
-		zValCounter = new Fl_Counter(0, 520, w / 5, 20, "Z");
+		zValCounter = new Fl_Counter(0, 550, w / 5, 20, "Z");
 		zValCounter->callback((void(*)(Fl_Widget*, void*))adjVertexCB, (void*)this);
 		zValCounter->value(c->getZ(rowVertexC->value(), colVertexC->value()));
 
-		saveOriginalB = new Fl_Button(0, 560, w / 5, 20, "update vertex changes");
+		saveOriginalB = new Fl_Button(0, 590, w / 5, 30, "update vertex changes");
 		saveOriginalB->callback((void(*)(Fl_Widget*, void*))saveOriginalCB, (void*)this);
 
 		pickColor = new Fl_Color_Chooser(0, 230, w / 5, 95, "new Mesh Color");
 		pickColor->callback((void(*)(Fl_Widget*, void*))pickColorCB, (void*)this);
 		pickColor->rgb(c->getRed(), c->getGreen(), c->getBlue());
 
-		topViewB = new Fl_Button(0, h - 90, w / 10, 20, "Top View");
+		topViewB = new Fl_Button(0, h - 100, w / 10, 30, "Top View");
 		topViewB->callback((void(*)(Fl_Widget*, void*))setViewCB, (void*)this);
 
-		frontViewB = new Fl_Button(w / 10, h - 90, w / 10, 20, "Front View");
+		frontViewB = new Fl_Button(w / 10, h - 100, w / 10, 30, "Front View");
 		frontViewB->callback((void(*)(Fl_Widget*, void*))setViewCB, (void*)this);
 		
-		wireB = new Fl_Button(0, h - 70, w / 5, 20, "Wireframe");
+		wireB = new Fl_Button(0, h - 70, w / 5, 25, "Wireframe");
 		wireB->callback((void(*)(Fl_Widget*, void*))wireCB, (void*)c);
 		
-		printB = new Fl_Button(0, h - 50, w / 5, 20, "Print");
+		printB = new Fl_Button(0, h - 45, w / 5, 25, "Print");
 		printB->callback((void(*)(Fl_Widget*, void*))printCB, (void*)c);
 		
 		exitB = new Fl_Button(0, h - 20, w / 5, 20, "Exit");
