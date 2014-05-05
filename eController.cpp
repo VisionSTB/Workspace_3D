@@ -93,6 +93,10 @@ void Controller::setMesh(Mesh* mesh) {
 	d->updateDrawing();
 }
 
+void Controller::setOriginal() {
+	m->setOriginal();
+}
+
 void Controller::select(int i){								// Set the selected face
 	selected = i; d->updateDrawing();
 }

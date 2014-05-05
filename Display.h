@@ -14,17 +14,20 @@ class Controller;	// forward declaration
 
 class Display: public Fl_Window{
 private:
+	const int maxSD = 6;		// max number of sub-divisions
 	Fl_Box* meshBox;			// box to display mesh things
 	Fl_Simple_Counter* rowCounter; // counter to increase/decrease num of rows
 	Fl_Simple_Counter* colCounter; // counter to increase/decrease num of columns
 	Fl_Simple_Counter* widthCounter; // counter to increase/decrease row width
 	Fl_Simple_Counter* depthCounter; // counter to increase/decrease column depth
 	Fl_Button* newMeshB;			// button to build new mesh 
+	Fl_Simple_Counter* smoothCounter; // counter to increase/decrease the number of sub-divisions
 	Fl_Button* smoothB;			// button to smooth out mesh with subdivision
 	Fl_Box* vertBox;			// box to display vertex things
 	Fl_Simple_Counter* rowVertexC;	// counter to select a row for a vertex
 	Fl_Simple_Counter* colVertexC;	// counter to select a vertex by column in the row
 	Fl_Counter* zValCounter;	// counter to adjust the z value of a vertex
+	Fl_Button* saveOriginalB;	// save current mesh as the new original
 	Fl_Button* topViewB;		// button to view mesh from above
 	Fl_Button* frontViewB;		// button to view mesh from in front
 	//Fl_Hold_Browser* browser;	// show a list of the faces to choose from
@@ -58,6 +61,7 @@ public:
 	static void pickColorCB(Fl_Color_Chooser* w, Display* d);
 	static void vertexCB(Fl_Simple_Counter* w, Display* d);
 	static void adjVertexCB(Fl_Counter* w, Display* d);
+	static void saveOriginalCB(Fl_Button* w, Display* d);
 	static void setViewCB(Fl_Button* w, Display* d);
 	static void wireCB(Fl_Button* w, Controller* c);
 	static void printCB(Fl_Button* w, Controller* c);

@@ -35,24 +35,32 @@ Display::Display(int x, int y, int w, int h, Controller* c):Fl_Window(x, y, w, h
 		newMeshB = new Fl_Button(0, 330, w / 5, 20, "New Mesh");
 		newMeshB->callback((void(*)(Fl_Widget*, void*))newMeshCB, (void*)this);
 
-		smoothB = new Fl_Button(0, 360, w / 5, 20, "Smooth this Mesh");
+		smoothCounter = new Fl_Simple_Counter(0, 370, w / 5, 20, "sub-divisions");
+		smoothCounter->range(0, maxSD);  // min and max sub-divisions
+		smoothCounter->value(0);
+		smoothCounter->step(1);
+
+		smoothB = new Fl_Button(0, 410, w / 5, 20, "Smooth this Mesh");
 		smoothB->callback((void(*)(Fl_Widget*, void*))smoothCB, (void*)this);
 
-		vertBox = new Fl_Box(0, 390, w / 5, 40, "Select vertex by row/col\nand adjust z value");
+		vertBox = new Fl_Box(0, 440, w / 5, 40, "Select vertex by row/col\nand adjust z value");
 
-		rowVertexC = new Fl_Simple_Counter(0, 430, w / 10, 20, "Row");
+		rowVertexC = new Fl_Simple_Counter(0, 480, w / 10, 20, "Row");
 		rowVertexC->callback((void(*)(Fl_Widget*, void*))vertexCB, (void*)this);
 		rowVertexC->range(0, c->getNumRows()); //row zero is the 1st row
 		rowVertexC->step(1);
 
-		colVertexC = new Fl_Simple_Counter(w / 10, 430, w / 10, 20, "Column");
+		colVertexC = new Fl_Simple_Counter(w / 10, 480, w / 10, 20, "Column");
 		colVertexC->callback((void(*)(Fl_Widget*, void*))vertexCB, (void*)this);
 		colVertexC->range(0, c->getNumCols()); //column zero is the 1st column
 		colVertexC->step(1);
 
-		zValCounter = new Fl_Counter(0, 470, w / 5, 20, "Z");
+		zValCounter = new Fl_Counter(0, 520, w / 5, 20, "Z");
 		zValCounter->callback((void(*)(Fl_Widget*, void*))adjVertexCB, (void*)this);
 		zValCounter->value(c->getZ(rowVertexC->value(), colVertexC->value()));
+
+		saveOriginalB = new Fl_Button(0, 560, w / 5, 20, "update vertex changes");
+		saveOriginalB->callback((void(*)(Fl_Widget*, void*))saveOriginalCB, (void*)this);
 
 		pickColor = new Fl_Color_Chooser(0, 230, w / 5, 95, "new Mesh Color");
 		pickColor->callback((void(*)(Fl_Widget*, void*))pickColorCB, (void*)this);
@@ -82,10 +90,12 @@ Display::~Display() {
 	delete(widthCounter);
 	delete(depthCounter);
 	delete(newMeshB);
+	delete(smoothCounter);
 	delete(smoothB);
 	delete(rowVertexC);
 	delete(colVertexC);
 	delete(zValCounter);
+	delete(saveOriginalB);
 	delete(topViewB);
 	delete(frontViewB);
 	delete(pickColor);
@@ -99,10 +109,12 @@ Display::~Display() {
 	widthCounter = NULL;
 	depthCounter = NULL;
 	newMeshB = NULL;
+	smoothCounter = NULL;
 	smoothB = NULL;
 	rowVertexC = NULL;
 	colVertexC = NULL;
 	zValCounter = NULL;
+	saveOriginalB = NULL;
 	topViewB = NULL;
 	frontViewB = NULL;
 	pickColor = NULL;
@@ -190,14 +202,17 @@ void Display::newMeshCB(Fl_Button* w, Display* d) {
 	d->rowVertexC->range(0, numRows);
 	d->colVertexC->range(0, numCols);
 	d->zValCounter->value(d->c->getZ(d->rowVertexC->value(), d->colVertexC->value()));
+	d->smoothCounter->range(0, d->maxSD);
+	d->smoothCounter->value(0);
 	Mesh* m = new Mesh(numCols, numRows, rowWidth, colDepth, color);
 	d->c->setMesh(m);
 }
 
 void Display::smoothCB(Fl_Button* w, Display* d) {
 	/* use catmul-clark sub-division */
-	d->c->smoothMesh(1); //default sub-divide 1 time 
-	d->rowVertexC->range(0, d->c->getNumRows());
+	int numSubDivisions = d->smoothCounter->value(); // get number of sub-divisions from counter
+	d->c->smoothMesh(numSubDivisions);				 // apply sub-divisions
+	d->rowVertexC->range(0, d->c->getNumRows());	 // adjust vertex counts
 	d->colVertexC->range(0, d->c->getNumCols());
 }
 
@@ -206,6 +221,13 @@ void Display::pickColorCB(Fl_Color_Chooser* w, Display* d) {
 	rgb[0] = w->r(); rgb[1] = w->g(); rgb[2] = w->b();
 	d->c->setColor(rgb);
 	d->updateDrawing();
+}
+
+void Display::saveOriginalCB(Fl_Button* w, Display* d) {
+	/* save current mesh as the original mesh 
+		so that changes are included in the smoothing.
+		This also includes the smoothing at the moment. */
+	d->c->setOriginal();
 }
 
 void Display::setViewCB(Fl_Button* w, Display* d) {

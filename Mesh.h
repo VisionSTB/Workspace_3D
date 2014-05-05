@@ -23,6 +23,7 @@ class Mesh {
 		double color[3];		// rgb color
 		std::vector<std::vector<vec4> > v;  /* vector of vectors, sub-vectors 
 											  hold vertices for a row */
+		std::vector<std::vector<vec4> > original;  // hold the original mesh here to revert back
 	public:
 		//	constructors   ////////
 		Mesh();													// default a mesh
@@ -50,12 +51,14 @@ class Mesh {
 		void setColDepth(double n);					// set depth of each column
 		void setColor(double rgb[3]);				// set color of the mesh
 		void setVertex(int r, int c, vec4 vertex);	// change a vertex
-		void setVertices(std::vector<std::vector<vec4>> newV);
+		void setVertices(std::vector<std::vector<vec4>> newV);	// set new mesh
+		void setOriginal();	// save current mesh as the original
 		///////////////////////////
 		// Other functions //////////////
 		///////////////////////////
 		void buildVertices();						// construct vertice based on fields
 		void printVertices();						// print each vertice in the mesh
 		void sub_divide(int n);						// sub-divide n times
+		void revertToOriginal();					// revert back to original mesh
 
 };

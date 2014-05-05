@@ -128,9 +128,12 @@ void Mesh::buildVertices() {
 	double adjY = (colDepth * numRows / 2);
 	mat4 trans = translation3D(vec3(adjX, adjY, 0));
 	// resize 2D vector
-	v.resize(numRows+1);
-	for (int i = 0; i < numRows+1; i++)
-		v[i].resize(numCols+1);
+	v.resize(numRows + 1);
+	original.resize(numRows + 1);
+	for (int i = 0; i < numRows + 1; i++) {
+		v[i].resize(numCols + 1);
+		original[i].resize(numCols + 1);
+	}
 	// fill in with vertices
 	for (int i = 0; i < numRows+1 ; i++) {
 		for (int j = 0; j < numCols+1; j++) {
@@ -141,6 +144,7 @@ void Mesh::buildVertices() {
 		}
 	}
 	v[0][0] = (vec4)v[0][0] * translation3D(vec3(-1, -1, 0));
+	original = v;
 }
 
 void Mesh::printVertices() {
@@ -155,11 +159,11 @@ void Mesh::printVertices() {
 
 void Mesh::sub_divide(int n) {
 	/* Implement Catmull-Clark subdivision on mesh */
+	revertToOriginal(); // use original mesh, and subdivide it n times.
 	while (n >= 1) {	// sub-divide n times
 		int sub_numRows = 2 * numRows;
 		int sub_numCols = 2 * numCols;
-		std::vector<std::vector<vec4> > sub_Vert(sub_numRows + 1,
-			std::vector<vec4>(sub_numCols + 1));
+		std::vector<std::vector<vec4> > sub_Vert(sub_numRows + 1, std::vector<vec4>(sub_numCols + 1));
 		/* for each new row(odd index), set center to Average of original face points */
 		for (int i = 1; i <= sub_numRows; i = i + 2) {	// odd rows
 			for (int j = 1; j <= sub_numCols; j = j + 2) {	// odd columns
@@ -257,4 +261,17 @@ void Mesh::sub_divide(int n) {
 		setVertices(sub_Vert);		// assign the new vertices to Mesh
 		n--;
 	}
+}
+
+// revert back to original mesh
+void Mesh::revertToOriginal() {
+	setVertices(original);
+}
+
+// save current mesh as original
+void Mesh::setOriginal() {
+	original.resize(numRows + 1);
+	for (int i = 0; i < numRows + 1; i++)
+		original[i].resize(numCols + 1);
+	original = v;
 }
