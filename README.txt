@@ -19,3 +19,14 @@ formula to smooth the mesh n number of times.  Each vertex can be selected by ch
 number and column number.  You can than adjust the z-value of that vertex.  To keep your changes
 to the vertices, press the 'update vertex changes button'. Keep in mind, this will also save the
 number of times it has been sub-divided.  If you do not update after changing vertices, smoothing the mesh will not consider your changes.  You can enable top and front views, as well as enable wireframe mode.  Print will display all the vertex values of the mesh in the console window.
+
+Side-Note:
+I wanted to challenge myself with the Catmull-Clark formula.  It is something I wanted badly to accomplish since Pixar uses it so I'm very happy that I was able to get this program to work.
+
+Known Bugs:
+
+1. Random isn't so random. Always seems to start with the same mesh.... Even though I set it to build a random mesh.
+
+2. Don't Smooth too much. As expected, too much smoothing will take decades, so it is currently limited to 6 sub-divisions.
+
+3. Exit button cuts off.  When you first open the program, the exit button is only half showing, but if you move the window, the rest appears.
